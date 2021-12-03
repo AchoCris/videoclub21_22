@@ -17,7 +17,7 @@ use App\Http\Controllers\CatalogController;
 
 Route::get('/', [HomeController::class, 'getHome']);
 
-Route::group(['prefix' => 'catalog'], function () {
+Route::group(['prefix' => 'catalog', 'middleware' => 'auth'], function () {
 
     Route::get('/', [CatalogController::class, 'getIndex']);
 
@@ -25,18 +25,13 @@ Route::group(['prefix' => 'catalog'], function () {
 
     Route::get('/create', [CatalogController::class, 'getCreate']);
 
+    Route::post('/create', [CatalogController::class, 'postCreate']);
+
     Route::get('/edit/{id}', [CatalogController::class, 'getEdit']);
 
+    Route::put('/edit/{id}', [CatalogController::class, 'putEdit']);
 });
-
-Route::get('/login', function () {
-    return view('auth.login');
-});
-
-Route::get('/logout', function () {
-    return ('Logout usuario');
-});
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+require __DIR__.'/auth.php';
